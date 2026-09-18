@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Phishing Email Alert Settings</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #1a1a1a;
+      margin-top: 0;
+      border-bottom: 2px solid #1a73e8;
+      padding-bottom: 10px;
+    }
+
+    .settings-section {
+      margin-bottom: 30px;
+    }
+
+    .settings-section h2 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 15px;
+      margin-top: 0;
+    }
+
+    .setting-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      background: #f9f9f9;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      border-left: 3px solid #1a73e8;
+    }
+
+    .setting-label {
+      flex: 1;
+    }
+
+    .setting-label strong {
+      display: block;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .setting-label span {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.3s;
+      border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: #1a73e8;
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+
+    .sensitivity-control {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .sensitivity-label {
+      min-width: 80px;
+      font-size: 12px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: #ddd;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #1a73e8;
+      cursor: pointer;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .btn-save {
+      background-color: #1a73e8;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background-color: #1557b0;
+    }
+
+    .btn-reset {
+      background-color: #f1f1f1;
+      color: #1a1a1a;
+      border: 1px solid #ddd;
+    }
+
+    .btn-reset:hover {
+      background-color: #e8e8e8;
+    }
+
+    .status-message {
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .status-success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+      display: block;
+    }
+
+    .info-box {
+      background: #e3f2fd;
+      border-left: 4px solid #2196F3;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #1565c0;
+      margin-top: 20px;
+    }
+
+    .stats {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .stat-item:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 13px;
+    }
+
+    .stat-value {
+      font-weight: bold;
+      color: #1a1a1a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Phishing Email Alert Settings</h1>
+    
+    <div id="statusMessage" class="status-message"></div>
+
+    <div class="settings-section">
+      <h2>Detection Sensitivity</h2>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <strong>Overall Sensitivity</strong>
+          <span>Higher = more alerts (including possible false positives)</span>
+        </div>
+        <div class="sensitivity-control">
+          <span class="sensitivity-label">Low</span>
+          <input type="range" id="sensitivity" min="1" max="5" value="3">
+          <span class="sensitivity-label" id="sensitivityValue">Medium</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>Detection Features</h2>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <strong>Check for company impersonation</strong>
+          <span>Flag links claiming to be from PayPal, Amazon, etc. but going elsewhere</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="checkCompanyImpersonation" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <strong>Check for suspicious subdomains</strong>
+          <span>Flag admin, verify, confirm, login subdomains on unknown domains</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="checkSubdomains" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <strong>Check for URL shorteners</strong>
+          <span>Flag bit.ly, tinyurl, and other URL shorteners</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="checkShorteners" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <strong>Check for homograph attacks</strong>
+          <span>Flag similar-looking domains (0 vs O, 1 vs l)</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="checkHomographs" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <strong>Check for urgent language</strong>
+          <span>Flag emails with phrases like "verify account", "unusual activity"</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="checkUrgentLanguage" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <strong>Check for password forms</strong>
+          <span>Flag forms requesting passwords in emails</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="checkForms" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>General</h2>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <strong>Enable console logging</strong>
+          <span>Show detailed logs in browser console (F12)</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="enableLogging" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button class="btn-save" id="saveBtn">Save Settings</button>
+      <button class="btn-reset" id="resetBtn">Reset to Defaults</button>
+    </div>
+
+    <div class="info-box">
+      Settings are saved locally in your browser and sync across Gmail, Outlook, and Yahoo Mail.
+    </div>
+
+    <div class="stats">
+      <strong>Statistics</strong>
+      <div class="stat-item">
+        <span class="stat-label">Emails Scanned</span>
+        <span class="stat-value" id="emailsScanned">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Threats Detected</span>
+        <span class="stat-value" id="threatsDetected">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Last Scan</span>
+        <span class="stat-value" id="lastScan">Never</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>
