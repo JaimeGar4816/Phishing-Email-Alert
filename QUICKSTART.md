@@ -26,14 +26,6 @@ Create a folder on your computer called `phishing-alert`
 ### Step 2: Copy Files
 Put all 6 files into that folder
 
-### Step 3: Load in Chrome
-1. Open Chrome
-2. Go to: `chrome://extensions/`
-3. Toggle "Developer mode" (top right)
-4. Click "Load unpacked"
-5. Select your `phishing-alert` folder
-6. Done! You should see the extension listed
-
 ## First Test
 
 ### Send Test Email
@@ -112,46 +104,6 @@ goes to: bit.ly/phishing
 goes to: https://google.com
 ```
 
-## Troubleshooting
-
-**Extension not working?**
-1. Refresh the page (F5)
-2. Go to chrome://extensions/
-3. Click refresh icon on the extension
-4. Open Developer Tools (F12 > Console)
-5. Look for: "Phishing Email Alert: Scanning active"
-
-**Not detecting my test email?**
-1. Make sure the link text and URL are mismatched
-2. Try a company name like "PayPal", "Amazon", "Google"
-3. Check console (F12) for debug messages
-
-**Can't open Settings?**
-1. Right-click extension icon
-2. Select "Options"
-3. Or click "Settings" link in popup
-
-## Next Steps
-
-1. Test with various phishing examples
-2. Explore Settings page (customize detection)
-3. Monitor Statistics (emails scanned, threats found)
-4. Share feedback on detection accuracy
-
-## For Your Portfolio
-
-This project is perfect for showing:
-- JavaScript and extension development
-- Security pattern recognition
-- UI/UX design
-- Settings/preferences management
-- Statistics tracking
-
-Mention in resume/interview:
-"Built a Chrome extension that detects 10+ types of phishing attacks using pattern recognition and link analysis. Features customizable detection sensitivity and user statistics."
-
 ## Questions?
 
 Check the full README.md for detailed documentation on how it works and all available features.
-
-Good luck with your cybersecurity internship applications!
