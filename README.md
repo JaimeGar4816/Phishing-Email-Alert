@@ -146,7 +146,7 @@ The extension may flag legitimate emails if:
 
 These can be reduced with a whitelist feature (Phase 2).
 
-## For Your Cybersecurity Portfolio
+## Summary
 
 This project demonstrates:
 - JavaScript and Chrome extension development
